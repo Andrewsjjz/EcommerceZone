@@ -99,7 +99,7 @@ const UserProfile = () => {
 
   return (
     <div className="flex justify-center pt-10">
-      <div className="w-full max-w-sm bg-slate-200 border border-gray-300 rounded-lg shadow">
+      <div className="w-[300px] max-w-sm bg-slate-200 border border-gray-300 rounded-lg shadow">
         {show ? (
           <>
             <div className="flex flex-col items-center pb-5">

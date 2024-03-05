@@ -1,38 +1,38 @@
-import React, { useState, ChangeEvent } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { post_product } from "../api/products";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import React, { useState, ChangeEvent } from "react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { post_product } from "../api/products"
+import { Link, useNavigate } from "react-router-dom"
+import { toast } from "react-hot-toast"
 
 const AddProductPage = () => {
-  const [name, setName] = useState<string>("");
-  const [countInStock, setCountInStock] = useState<number>(0);
-  const [category, setCategory] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
-  const [image, setImage] = useState<File | null>(null);
-  const [filePreview, setFilePreview] = useState<string>("");
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [name, setName] = useState<string>("")
+  const [countInStock, setCountInStock] = useState<number>(0)
+  const [category, setCategory] = useState<string>("")
+  const [description, setDescription] = useState<string>("")
+  const [price, setPrice] = useState<number>(0)
+  const [image, setImage] = useState<File | null>(null)
+  const [filePreview, setFilePreview] = useState<string>("")
+  const inputRef = React.useRef<HTMLInputElement>(null)
+  const [isHovered, setIsHovered] = useState(false)
 
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const addProdMutation = useMutation({
     mutationFn: post_product,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
-      toast.success("Producto creado con éxito");
-      navigate("/admin");
+      queryClient.invalidateQueries({ queryKey: ["products"] })
+      toast.success("Producto creado con éxito")
+      navigate("/admin")
     },
     onError: () => {
-      toast.error("Error!");
-      navigate("/admin");
+      toast.error("Error!")
+      navigate("/admin")
     },
-  });
+  })
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
     addProdMutation.mutate({
       name: name,
       count_in_stock: countInStock,
@@ -40,71 +40,77 @@ const AddProductPage = () => {
       description: description,
       price: price,
       image: image,
-    });
-  };
+    })
+  }
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
+    setName(event.target.value)
+  }
 
   const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setCategory(event.target.value);
-  };
+    setCategory(event.target.value)
+  }
 
   const handleDescriptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setDescription(event.target.value);
-  };
+    setDescription(event.target.value)
+  }
 
   const handleCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newNumber = parseInt(event.target.value, 10);
-    setCountInStock(newNumber);
-  };
+    const newNumber = parseInt(event.target.value, 10)
+    setCountInStock(newNumber)
+  }
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newNumber = parseInt(event.target.value, 10);
-    setPrice(newNumber);
-  };
+    const newNumber = parseInt(event.target.value, 10)
+    setPrice(newNumber)
+  }
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
+    const file = event.target.files && event.target.files[0]
     if (file) {
-      setImage(file);
-      const reader = new FileReader();
+      setImage(file)
+      const reader = new FileReader()
       reader.onload = () => {
-        setFilePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+        setFilePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const handleDragEnter = (event: React.DragEvent<HTMLLabelElement>) => {
-    event.preventDefault();
-    setIsHovered(true);
-  };
+    event.preventDefault()
+    setIsHovered(true)
+  }
 
   const handleDragLeave = (event: React.DragEvent<HTMLLabelElement>) => {
-    event.preventDefault();
-    setIsHovered(false);
-  };
+    event.preventDefault()
+    setIsHovered(false)
+  }
 
   const removeImage = () => {
-    setImage(null);
-    setIsHovered(false);
-  };
+    setImage(null)
+    setIsHovered(false)
+  }
 
-  if (addProdMutation.isLoading) return <p>Loader....</p>;
+  if (addProdMutation.isLoading) return <p>Loader....</p>
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 ">
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[700px] w-[600px] rounded-md">
-        <div className="relative p-4 w-full max-w-2xl h-full md:h-auto">
-          <div className="relative p-4 bg-slate-100 rounded-lg shadow sm:p-5">
-            <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+      <div
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[500px] w-[400px] 
+      rounded-md"
+      >
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+          <div className="relative p-4 w-full max-w-md h-auto md:h-auto overflow-y-auto bg-slate-100 rounded-lg shadow">
+            <div
+              className="flex justify-between items-center pb-2 mb-2 rounded-t border-b sm:mb-3 dark:border-gray-600"
+            >
               <h3 className="text-lg font-semibold text-black">
                 Agregar Producto
               </h3>
               <Link
                 to="/admin"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg 
+                text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-toggle="defaultModal"
               >
                 <svg
@@ -221,7 +227,7 @@ const AddProductPage = () => {
                         className={`flex flex-col items-center justify-center w-full h-64 
                         border-2 border-gray-600 border-dashed rounded-lg 
                         cursor-pointer bg-gray-40 ${
-                        isHovered ? "bg-gray-600" : "hover:bg-gray-600"
+                          isHovered ? "bg-gray-600" : "hover:bg-gray-600"
                         }`}
                         onDragEnter={handleDragEnter}
                         onDragLeave={handleDragLeave}
@@ -295,31 +301,31 @@ const AddProductPage = () => {
                 </div>
               </div>
               <div className="flex items-center justify-center">
-              <button
-                type="submit"
-                className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 
+                <button
+                  type="submit"
+                  className="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 
                 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-              >
-                <svg
-                  className="mr-1 -ml-1 w-6 h-6"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Guardar nuevo producto
-              </button>
+                  <svg
+                    className="mr-1 -ml-1 w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  Guardar nuevo producto
+                </button>
               </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-  );
-};
-export default AddProductPage;
+  )
+}
+export default AddProductPage
