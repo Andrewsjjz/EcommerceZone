@@ -36,7 +36,7 @@ cd EcommerceZone
 Crear el entorno virtual
 
 ```bash
-python3 -m venv env
+py -m venv env
 ```
 
 Dirigirnos a la carpeta Scripts de tu entorno virtual
